@@ -63,6 +63,20 @@ while True:
         
     elif opcao == "s":
         print("-----Saque-----")
+        print(f"Saldo da Conta: {saldo}")
+        saq = float(input("Valor do Saque: "))
+        if saq <= 0:
+            print("Valor do saque incorreto!")
+        else:
+            if saq > saldo:
+                print("Saldo insuficiente!")
+            else:
+                saldo -= saq
+                print(f"Saque realizado, novo saldo: {saldo}")
+                extrato.append(saq)
+        print("\nPressione uma tecla para continuar...")
+        msvcrt.getch() # Aguarda a pressionar alguma tecla
+        os.system("cls") # Limpa termial
         
     elif opcao == "e":
         print("-----Extrato-----")
