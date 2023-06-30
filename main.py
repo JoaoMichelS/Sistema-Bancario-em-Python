@@ -36,7 +36,7 @@ menu = """
 
 saldo = 0
 limite = 500
-extrato = ""
+extrato = []
 numeros_saques = 0
 LIMITE_SAQUES = 3
 
@@ -44,7 +44,16 @@ while True:
     opcao = input(menu)
     
     if opcao == "d":
-        print("Depósito")
+        print("-----Depósito-----")
+        print(f"Saldo da Conta: {saldo}")
+        dep = float(input("Valor do Depósito: "))
+        if dep <= 0:
+            print("Valor de depósito incorreto!")
+        else:
+            saldo += dep
+            print(f"Depósito realizado, novo saldo: {saldo}")
+            extrato.append(dep)        
+        
     elif opcao == "s":
         print("Saque")
     elif opcao == "e":
