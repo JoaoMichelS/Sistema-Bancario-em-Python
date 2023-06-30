@@ -57,7 +57,8 @@ while True:
     elif opcao == "s":
         print("Saque")
     elif opcao == "e":
-        print("Extrato")
+        extrato_formatados = ["R$ {:.2f}".format(ext) for ext in extrato]
+        print(f"extrato: {extrato_formatados}")
     elif opcao == "q":
         break
     else:
