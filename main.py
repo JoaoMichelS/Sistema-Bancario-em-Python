@@ -25,6 +25,9 @@ Os valores devem ser exibidos utilizando o formato R$ xxx.xx, exemplo:
 1500.45 = R$ 1500.45
 '''
 
+import os
+import msvcrt
+
 menu = """
 
 [d] Depositar
@@ -52,14 +55,25 @@ while True:
         else:
             saldo += dep
             print(f"Depósito realizado, novo saldo: {saldo}")
-            extrato.append(dep)        
+            extrato.append(dep)       
+        print("\nPressione uma tecla para continuar...")
+        msvcrt.getch() # Aguarda a pressionar alguma tecla
+        os.system("cls") # Limpa termial
+             
         
     elif opcao == "s":
-        print("Saque")
+        print("-----Saque-----")
+        
     elif opcao == "e":
+        print("-----Extrato-----")
         extrato_formatados = ["R$ {:.2f}".format(ext) for ext in extrato]
         print(f"extrato: {extrato_formatados}")
+        print("\nPressione uma tecla para continuar...")
+        msvcrt.getch() # Aguarda a pressionar alguma tecla
+        os.system("cls") # Limpa termial
+        
     elif opcao == "q":
         break
+    
     else:
         print("Operação inválida, por favor selecione novamente a operação desejada.")
