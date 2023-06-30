@@ -65,15 +65,19 @@ while True:
         print("-----Saque-----")
         print(f"Saldo da Conta: {saldo}")
         saq = float(input("Valor do Saque: "))
-        if saq <= 0:
+        if (saq <= 0) or (saq > 500):
             print("Valor do saque incorreto!")
         else:
             if saq > saldo:
                 print("Saldo insuficiente!")
             else:
-                saldo -= saq
-                print(f"Saque realizado, novo saldo: {saldo}")
-                extrato.append(saq)
+                if numeros_saques >= 3:
+                    print("Limite de saques no dia alcançado!")
+                else:
+                    saldo -= saq
+                    print(f"Saque realizado, novo saldo: {saldo}")
+                    extrato.append(saq)
+                    numeros_saques += 1
         print("\nPressione uma tecla para continuar...")
         msvcrt.getch() # Aguarda a pressionar alguma tecla
         os.system("cls") # Limpa termial
