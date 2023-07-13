@@ -73,74 +73,74 @@ Dica
 Para vincular um usuário a uma conta, filtre a lista de usuários buscando o número do CPF informado para cada usuário 
 da lista.
 '''
+import colorama
+from colorama import Fore
 
-import os
-import msvcrt
+def main():
+    # pip install colorama
+    colorama.init()
+    menu = """
 
-menu = """
+    [1] Depositar
+    [2] Sacar
+    [3] Extrato
+    [4] Sair
 
-[d] Depositar
-[s] Sacar
-[e] Extrato
-[q] Sair
+    => """
+    saldo_conta = 0
+    limite_sacar = 500
+    extrato = ""
+    num_saques = 0
+    NUM_LIM_SAQUE = 3
 
-=> """
-
-saldo = 0
-limite = 500
-extrato = []
-numeros_saques = 0
-LIMITE_SAQUES = 3
-
-while True:
-    opcao = input(menu)
-    
-    if opcao == "d":
-        print("-----Depósito-----")
-        print(f"Saldo da Conta: {saldo}")
-        dep = float(input("Valor do Depósito: "))
-        if dep <= 0:
-            print("Valor de depósito incorreto!")
+    while True:
+        opcao = int(input(menu))
+        if opcao == 1: 
+            saldo_conta,extrato = depositar(saldo_conta,extrato)
+        elif opcao == 2:
+            NUM_LIM_SAQUE,saldo_conta,limite_sacar,num_saques,extrato = sacar(NUM_LIM_SAQUE,saldo_conta,limite_sacar,num_saques,extrato)
+        elif opcao == 3:
+            imprimirExtrato(extrato,saldo_conta)
+        elif opcao == 4:
+            break
         else:
-            saldo += dep
-            print(f"Depósito realizado, novo saldo: {saldo}")
-            extrato.append(dep)       
-        print("\nPressione uma tecla para continuar...")
-        msvcrt.getch() # Aguarda a pressionar alguma tecla
-        os.system("cls") # Limpa termial
-             
-        
-    elif opcao == "s":
-        print("-----Saque-----")
-        print(f"Saldo da Conta: {saldo}")
-        saq = float(input("Valor do Saque: "))
-        if (saq <= 0) or (saq > 500):
-            print("Valor do saque incorreto!")
-        else:
-            if saq > saldo:
-                print("Saldo insuficiente!")
-            else:
-                if numeros_saques >= 3:
-                    print("Limite de saques no dia alcançado!")
-                else:
-                    saldo -= saq
-                    print(f"Saque realizado, novo saldo: {saldo}")
-                    extrato.append(saq)
-                    numeros_saques += 1
-        print("\nPressione uma tecla para continuar...")
-        msvcrt.getch() # Aguarda a pressionar alguma tecla
-        os.system("cls") # Limpa termial
-        
-    elif opcao == "e":
-        print("-----Extrato-----")
-        extrato_formatados = ["R$ {:.2f}".format(ext) for ext in extrato]
-        print(f"extrato: {extrato_formatados}")
-        print("\nPressione uma tecla para continuar...")
-        msvcrt.getch() # Aguarda a pressionar alguma tecla
-        os.system("cls") # Limpa termial
-        
-    elif opcao == "q":
-        break
+            print(Fore.RED + "\nOpção inserida é inválida. Selecione novamente." + Fore.RESET)
     
+    colorama.deinit()
+
+def depositar(saldo_conta,extrato):
+    val = float(input("Inserir o valor do depósito: "))
+
+    if val > 0:
+        saldo_conta += val
+        extrato += f"\n\t[1] Depósito: R$ {val:.2f}"  
     else:
-        print("Operação inválida, por favor selecione novamente a operação desejada.")
+        print(Fore.RED + "\nErro! Não foi possivel realizar o deposito pois o valor não era válido." + Fore.RESET)
+    return saldo_conta, extrato
+
+def sacar(NUM_LIM_SAQUE,saldo_conta,limite_sacar,num_saques,extrato):
+    val = float(input("Inserir o valor do saque: "))
+
+    if val > saldo_conta:
+        print(Fore.RED + "\nErro! Não foi possivel realizar o saque pois o saldo não é suficiente." + Fore.RESET)
+    elif val > limite_sacar:
+        print(Fore.RED + "\nErro! Não foi possivel realizar o saque pois o saque excedeu o valor limite." + Fore.RESET)
+    elif num_saques >= NUM_LIM_SAQUE:
+        print(Fore.RED + "\nErro! Não foi possivel realizar o saque pois foi excedido o número máximo de saques." + Fore.RESET)
+    elif val > 0:
+        saldo_conta -= val
+        extrato += f"\n\t[2] Saque: R$ {val:.2f}"
+        num_saques += 1
+    else:
+        print(Fore.RED + "\nErro! O valor informado não é válido." + Fore.RESET)
+    return NUM_LIM_SAQUE,saldo_conta,limite_sacar,num_saques,extrato
+
+
+def imprimirExtrato(extrato,saldo_conta):
+    print(Fore.BLUE + " EXTRATO ".center(40,"="))
+    print("\nNão houve movimentação na conta.\n" if not extrato else extrato)
+    print(f"\nSaldo: R$ {saldo_conta:.2f}\n"+("="*40) + Fore.RESET)
+
+
+if __name__ == "__main__":
+    main()
